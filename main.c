@@ -35,6 +35,7 @@ void rangeset(char * src, int *len, num_set_tuple *data) {
     num_set_len = times;
     for (int times2 = 0;times2 < times; times2++) {
         num_set[times2] = atoi(src_set[times2]);
+        free(src_set[times]);
     }
     * len = num_set_len/2;
     if (num_set_len != num_set[0]+1) {
