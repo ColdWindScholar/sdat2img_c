@@ -45,7 +45,7 @@ void rangeset(char * src, int *len, num_set_tuple *data) {
     for (int times2 = 0;times2 < times; times2++) {
         num_set[times2] = atoi(src_set[times2]);
     }
-    * len = num_set_len / 2;
+    * len = num_set_len/2;
     if (num_set_len != num_set[0]+1) {
         fprintf(stderr, "Error on parsing following data to rangeset(%d:%d):\n%s\n", num_set_len, num_set[0]+1, src);
         exit(1);
@@ -67,9 +67,9 @@ void parse_transfer_list_file(const char *TRANSFER_LIST_FILE, list_data * parse_
     int offset=2;
     int l =0;
 
-    lines[0] = malloc(1000);
-    for(;fgets(lines[l], 1000, trans_list)!=NULL ;l++) {
-        lines[l+1] = malloc(1000);
+    lines[0] = malloc(2048);
+    for(;fgets(lines[l], 2048, trans_list)!=NULL ;l++) {
+        lines[l+1] = malloc(2048);
     }
     fclose(trans_list);
     int version = atoi(lines[0]);
