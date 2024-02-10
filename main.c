@@ -88,6 +88,7 @@ void parse_transfer_list_file(const char *TRANSFER_LIST_FILE, list_data * parse_
     for (int i = 0; i < l; i++) {
         parse_data[i].cmd = strtok(lines[i+offset], " ");
         parse_data[i].src = strtok(NULL, " ");
+        free(lines[i+offset]);
     }
 }
 void sdat2img(char * TRANSFER_LIST_FILE, char * NEW_DATA_FILE, char * OUTPUT_IMAGE_FILE) {
