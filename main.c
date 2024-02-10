@@ -134,7 +134,6 @@ int main(const int argc, char *argv[]) {
     if (argc == 4) {
         sdat2img(argv[1], argv[2], argv[3]);
     } else {
-        sdat2img("G:/A_WORK/miui_GAUGUIN_V14.0.2.0.SJSCNXM_af14debf9a_12.0/system.transfer.list", "G:/A_WORK/miui_GAUGUIN_V14.0.2.0.SJSCNXM_af14debf9a_12.0/system.new.dat", "G:/A_WORK/miui_GAUGUIN_V14.0.2.0.SJSCNXM_af14debf9a_12.0/system.img");
         printf("sdat2img <transfer_list> <system_new_file> [system_img]\n");
         printf("Write By ColdWindScholar(3590361911@qq.com)\n");
     }
