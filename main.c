@@ -1,3 +1,6 @@
+#define _LARGEFILE_SOURCE
+#define _LARGEFILE64_SOURCE
+#define _FILE_OFFSET_BITS 64
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,6 +11,10 @@
 #endif
 #ifndef _MAX_PATH
 #define _MAX_PATH 206
+#endif
+#ifndef fopen64
+#define fopen64 fopen
+#define _fseeki64 fseek
 #endif
 typedef struct  {
     int begin;
@@ -52,7 +59,7 @@ void parse_transfer_list_file(const char *TRANSFER_LIST_FILE, list_data * parse_
         printf("Failed To open TRANSFER_LIST_FILE");
         exit(1);
     }
-    char *lines[4096];
+    char *lines[8096];
     int offset=2;
     int l =0;
 
@@ -89,11 +96,11 @@ void parse_transfer_list_file(const char *TRANSFER_LIST_FILE, list_data * parse_
 }
 void sdat2img(const char * TRANSFER_LIST_FILE, const char * NEW_DATA_FILE, char * OUTPUT_IMAGE_FILE) {
     printf("sdat2img binary - version: 1.3\n");
-    list_data parse_data[2048];
+    list_data parse_data[8196];
     int new_blocks;
     parse_transfer_list_file(TRANSFER_LIST_FILE, (list_data *)&parse_data, &new_blocks);
-    FILE * output_img = fopen(OUTPUT_IMAGE_FILE, "wb");
-    FILE *new_data_file = fopen(NEW_DATA_FILE, "rb");
+    FILE * output_img = fopen64(OUTPUT_IMAGE_FILE, "wb");
+    FILE *new_data_file = fopen64(NEW_DATA_FILE, "rb");
     if (new_data_file == NULL) {
         printf("Error: Cannot Creat NEW_DATA Images\n");
         exit(1);
@@ -106,7 +113,7 @@ void sdat2img(const char * TRANSFER_LIST_FILE, const char * NEW_DATA_FILE, char 
             for (int i_ =0; i_ < len; i_++) {
                 int block_count = data[i_].end - data[i_].begin;
                 printf("Copying %d blocks into position %d...\n", block_count, data[i_].begin);
-                fseek(output_img, data[i_].begin * BLOCK_SIZE, SEEK_SET);
+                _fseeki64(output_img, data[i_].begin * BLOCK_SIZE, SEEK_SET);
                 while(block_count > 0) {
                     char* file_data[4096];
                     fread(file_data, BLOCK_SIZE, 1, new_data_file);
@@ -127,6 +134,7 @@ int main(const int argc, char *argv[]) {
     if (argc == 4) {
         sdat2img(argv[1], argv[2], argv[3]);
     } else {
+        sdat2img("G:/A_WORK/miui_GAUGUIN_V14.0.2.0.SJSCNXM_af14debf9a_12.0/system.transfer.list", "G:/A_WORK/miui_GAUGUIN_V14.0.2.0.SJSCNXM_af14debf9a_12.0/system.new.dat", "G:/A_WORK/miui_GAUGUIN_V14.0.2.0.SJSCNXM_af14debf9a_12.0/system.img");
         printf("sdat2img <transfer_list> <system_new_file> [system_img]\n");
         printf("Write By ColdWindScholar(3590361911@qq.com)\n");
     }
