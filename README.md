@@ -6,4 +6,4 @@ cmake .
 make -j 24
 ```
 ## About
-### Written By (ColdWindScholar)[https://github.com/ColdWindScholar]
+### Written By [ColdWindScholar](https://github.com/ColdWindScholar)
