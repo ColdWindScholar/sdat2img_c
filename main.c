@@ -116,7 +116,7 @@ void sdat2img(const char * TRANSFER_LIST_FILE, const char * NEW_DATA_FILE, char 
             rangeset(parse_data[i].src, &len, (num_set_tuple *)&data);
             for (int i_ =0; i_ < len; i_++) {
                 int block_count = data[i_].end - data[i_].begin;
-                printf("Copying %d blocks into position %d...\n", block_count, data[i_].begin);
+                printf("Copying %d blocks into position %ld...\n", block_count, data[i_].begin);
                 _fseeki64(output_img, data[i_].begin * BLOCK_SIZE, SEEK_SET);
                 while(block_count > 0) {
                     char* file_data[4096];
