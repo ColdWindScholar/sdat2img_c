@@ -23,7 +23,7 @@ void rangeset(char * src, int *len, num_set_tuple *data) {
     int num_set[_MAX_PATH];
     int num_set_len;
     char *src_set_tmp;
-    char *src_copied[_MAX_PATH];
+    char src_copied[_MAX_PATH];
     strcpy(src_copied, src);
     src_set_tmp = strtok(src_copied, ",");
     while (src_set_tmp != NULL) {
