@@ -126,7 +126,7 @@ int sdat2img(char * TRANSFER_LIST_FILE, char * NEW_DATA_FILE, char * OUTPUT_IMAG
     fclose(new_data_file);
 }
 int main(int argc, char *argv[]) {
-    if (argc == 3) {
+    if (argc == 4) {
         sdat2img(argv[1], argv[2], argv[3]);
     } else {
         printf("sdat2img <transfer_list> <system_new_file> [system_img]\n");
