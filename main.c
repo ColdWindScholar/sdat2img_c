@@ -21,18 +21,16 @@ void rangeset(char * src, int *len, num_set_tuple *data) {
     int times = 0;
     char *src_set[200];
     int num_set[_MAX_PATH];
-    int num_set_len;
-    char *src_set_tmp;
     char src_copied[_MAX_PATH];
     strcpy(src_copied, src);
-    src_set_tmp = strtok(src_copied, ",");
+    char *src_set_tmp = strtok(src_copied, ",");
     while (src_set_tmp != NULL) {
         src_set[times] = malloc(strlen(src_set_tmp) + 1); // 分配足够的内存空间
         strcpy(src_set[times], src_set_tmp); // 复制子字符串到新分配的内存中
         times++;
         src_set_tmp = strtok(NULL, ",");
     }
-    num_set_len = times;
+    int num_set_len = times;
     for (int times2 = 0;times2 < times; times2++) {
         num_set[times2] = atoi(src_set[times2]);
     }
@@ -54,7 +52,6 @@ void parse_transfer_list_file(const char *TRANSFER_LIST_FILE, list_data * parse_
         printf("Failed To open TRANSFER_LIST_FILE");
         exit(1);
     }
-    int version;
     char *lines[4096];
     int offset=2;
     int l =0;
@@ -64,7 +61,7 @@ void parse_transfer_list_file(const char *TRANSFER_LIST_FILE, list_data * parse_
         lines[l+1] = malloc(1000);
     }
     fclose(trans_list);
-    version = atoi(lines[0]);
+    int version = atoi(lines[0]);
     *new_blocks = atoi(lines[1]);
     switch (version) {
         case 1:
@@ -90,12 +87,11 @@ void parse_transfer_list_file(const char *TRANSFER_LIST_FILE, list_data * parse_
         parse_data[i].src = strtok(NULL, " ");
     }
 }
-void sdat2img(char * TRANSFER_LIST_FILE, char * NEW_DATA_FILE, char * OUTPUT_IMAGE_FILE) {
+void sdat2img(const char * TRANSFER_LIST_FILE, const char * NEW_DATA_FILE, char * OUTPUT_IMAGE_FILE) {
     printf("sdat2img binary - version: 1.3\n");
     list_data parse_data[2048];
     int new_blocks;
-    int block_count;
-    parse_transfer_list_file(TRANSFER_LIST_FILE, &parse_data, &new_blocks);
+    parse_transfer_list_file(TRANSFER_LIST_FILE, (list_data *)&parse_data, &new_blocks);
     FILE * output_img = fopen(OUTPUT_IMAGE_FILE, "wb");
     FILE *new_data_file = fopen(NEW_DATA_FILE, "rb");
     if (new_data_file == NULL) {
@@ -106,13 +102,13 @@ void sdat2img(char * TRANSFER_LIST_FILE, char * NEW_DATA_FILE, char * OUTPUT_IMA
         if (strcmp(parse_data[i].cmd, "new") == 0) {
             int len = 0;
             num_set_tuple data[_MAX_PATH];
-            rangeset(parse_data[i].src, &len, &data);
-            char * file_data[4096];
+            rangeset(parse_data[i].src, &len, (num_set_tuple *)&data);
             for (int i_ =0; i_ < len; i_++) {
-                block_count = data[i_].end - data[i_].begin;
+                int block_count = data[i_].end - data[i_].begin;
                 printf("Copying %d blocks into position %d...\n", block_count, data[i_].begin);
                 fseek(output_img, data[i_].begin * BLOCK_SIZE, SEEK_SET);
                 while(block_count > 0) {
+                    char* file_data[4096];
                     fread(file_data, BLOCK_SIZE, 1, new_data_file);
                     fwrite(file_data, 4096,1 , output_img);
                     block_count-=1;
@@ -127,7 +123,7 @@ void sdat2img(char * TRANSFER_LIST_FILE, char * NEW_DATA_FILE, char * OUTPUT_IMA
     fclose(output_img);
     fclose(new_data_file);
 }
-int main(int argc, char *argv[]) {
+int main(const int argc, char *argv[]) {
     if (argc == 4) {
         sdat2img(argv[1], argv[2], argv[3]);
     } else {
