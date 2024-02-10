@@ -15,7 +15,7 @@ typedef struct {
     char *cmd;
     char *src;
 } list_data;
-num_set_tuple*  rangeset(char * src, int *len, num_set_tuple *data) {
+void rangeset(char * src, int *len, num_set_tuple *data) {
     int times = 0;
     char *src_set[200];
     int num_set[_MAX_PATH];
@@ -46,7 +46,7 @@ num_set_tuple*  rangeset(char * src, int *len, num_set_tuple *data) {
         times++;
     }
 }
-int parse_transfer_list_file(const char *TRANSFER_LIST_FILE, list_data * parse_data, int *new_blocks) {
+void parse_transfer_list_file(const char *TRANSFER_LIST_FILE, list_data * parse_data, int *new_blocks) {
     FILE *trans_list = fopen(TRANSFER_LIST_FILE, "rt");
     if (trans_list == NULL) {
         printf("Failed To open TRANSFER_LIST_FILE");
@@ -88,7 +88,7 @@ int parse_transfer_list_file(const char *TRANSFER_LIST_FILE, list_data * parse_d
         parse_data[i].src = strtok(NULL, " ");
     }
 }
-int sdat2img(char * TRANSFER_LIST_FILE, char * NEW_DATA_FILE, char * OUTPUT_IMAGE_FILE) {
+void sdat2img(char * TRANSFER_LIST_FILE, char * NEW_DATA_FILE, char * OUTPUT_IMAGE_FILE) {
     printf("sdat2img binary - version: 1.3\n");
     list_data parse_data[2048];
     int new_blocks;
