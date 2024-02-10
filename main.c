@@ -130,6 +130,4 @@ int main(const int argc, char *argv[]) {
         printf("sdat2img <transfer_list> <system_new_file> [system_img]\n");
         printf("Write By ColdWindScholar(3590361911@qq.com)\n");
     }
-
 }
-
