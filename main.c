@@ -6,7 +6,9 @@
 #ifndef _MAX_PATH
 #define _MAX_PATH 1000
 #endif
-
+#ifndef _MAX_PATH
+#define _MAX_PATH 206
+#endif
 typedef struct  {
     int begin;
     int end;
