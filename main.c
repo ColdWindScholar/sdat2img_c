@@ -1,6 +1,7 @@
 #define _LARGEFILE_SOURCE
 #define _LARGEFILE64_SOURCE
 #define _FILE_OFFSET_BITS 64
+#define LARGEFILES
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,9 +17,12 @@
 #define fopen64 fopen
 #define _fseeki64 fseek
 #endif
+#ifdef off64_t
+#define off_t off64_t
+#endif
 typedef struct  {
-    int begin;
-    int end;
+    off_t begin;
+    off_t end;
 } num_set_tuple;
 typedef struct {
     char *cmd;
