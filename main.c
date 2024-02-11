@@ -141,11 +141,12 @@ void sdat2img(const char * TRANSFER_LIST_FILE, const char * NEW_DATA_FILE, char 
                 while(block_count > 0) {
                     char* file_data[4096];
                     fread(file_data, BLOCK_SIZE, 1, new_data_file);
-#ifndef __WIN32
+#ifdef  __WIN32
+                    DWORD bytesWritten = 0;
+                    WriteFile(output_img, file_data, sizeof(file_data), &bytesWritten, NULL);
+#else
 
                     fwrite(file_data, 4096,1 , output_img);
-#else
-                    WriteFile(output_img, file_data, 4096, (LPDWORD)4096, NULL);
 #endif
                     block_count-=1;
                 }
