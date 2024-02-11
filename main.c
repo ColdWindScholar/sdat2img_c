@@ -29,9 +29,9 @@ typedef struct {
     char *src;
 } list_data;
 void rangeset(char * src, int *len, num_set_tuple *data) {
-    int times = 0;
-    char *src_set[200];
-    int num_set[_MAX_PATH];
+    off_t times = 0;
+    char *src_set[400];
+    off_t num_set[400];
     char src_copied[_MAX_PATH];
     strcpy(src_copied, src);
     char *src_set_tmp = strtok(src_copied, ",");
@@ -41,13 +41,13 @@ void rangeset(char * src, int *len, num_set_tuple *data) {
         times++;
         src_set_tmp = strtok(NULL, ",");
     }
-    int num_set_len = times;
+    off_t num_set_len = times;
     for (int times2 = 0;times2 < times; times2++) {
         num_set[times2] = atoi(src_set[times2]);
     }
     * len = num_set_len/2;
     if (num_set_len != num_set[0]+1) {
-        fprintf(stderr, "Error on parsing following data to rangeset(%d:%d):\n%s\n", num_set_len, num_set[0]+1, src);
+        fprintf(stderr, "Error on parsing following data to rangeset(%ld:%ld):\n%s\n", num_set_len, num_set[0]+1, src);
         exit(1);
     }
     times = 0;
@@ -138,6 +138,7 @@ int main(const int argc, char *argv[]) {
     if (argc == 4) {
         sdat2img(argv[1], argv[2], argv[3]);
     } else {
+        sdat2img("G:/A_WORK/miui_GAUGUIN_V14.0.2.0.SJSCNXM_af14debf9a_12.0/product.transfer.list", "G:/A_WORK/miui_GAUGUIN_V14.0.2.0.SJSCNXM_af14debf9a_12.0/product.new.dat", "G:/A_WORK/miui_GAUGUIN_V14.0.2.0.SJSCNXM_af14debf9a_12.0/test.img");
         printf("sdat2img <transfer_list> <system_new_file> [system_img]\n");
         printf("Write By ColdWindScholar(3590361911@qq.com)\n");
     }
