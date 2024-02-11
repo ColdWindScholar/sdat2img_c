@@ -72,7 +72,7 @@ void parse_transfer_list_file(const char *TRANSFER_LIST_FILE, list_data * parse_
         lines[l+1] = malloc(2048);
     }
     fclose(trans_list);
-    int version = atoi(lines[0]);
+    const int version = atoi(lines[0]);
     *new_blocks = atoi(lines[1]);
     switch (version) {
         case 1:
