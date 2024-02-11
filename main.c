@@ -7,6 +7,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include "main.h"
+#ifdef __WIN32
+#include <windows.h>
+
+#endif
 #ifndef _MAX_PATH
 #define _MAX_PATH 1000
 #endif
@@ -103,7 +107,23 @@ void sdat2img(const char * TRANSFER_LIST_FILE, const char * NEW_DATA_FILE, char 
     list_data parse_data[8196];
     int new_blocks;
     parse_transfer_list_file(TRANSFER_LIST_FILE, (list_data *)&parse_data, &new_blocks);
+#if !defined(__WIN32)
     FILE * output_img = fopen64(OUTPUT_IMAGE_FILE, "wb");
+#else
+    HANDLE output_img = CreateFile(OUTPUT_IMAGE_FILE,                // name of the write
+                       GENERIC_WRITE,          // open for writing
+                       0,                      // do not share
+                       NULL,                   // default security
+                       CREATE_NEW,             // create new file only
+                       FILE_ATTRIBUTE_NORMAL,  // normal file
+                       NULL);
+    if (output_img == INVALID_HANDLE_VALUE)
+    {
+        fprintf(stderr, "Error: Cannot Creat output images");
+        return;
+    }
+
+#endif
     FILE *new_data_file = fopen64(NEW_DATA_FILE, "rb");
     if (new_data_file == NULL) {
         printf("Error: Cannot Creat NEW_DATA Images\n");
@@ -121,7 +141,12 @@ void sdat2img(const char * TRANSFER_LIST_FILE, const char * NEW_DATA_FILE, char 
                 while(block_count > 0) {
                     char* file_data[4096];
                     fread(file_data, BLOCK_SIZE, 1, new_data_file);
+#ifndef __WIN32
+
                     fwrite(file_data, 4096,1 , output_img);
+#else
+                    WriteFile(output_img, file_data, 4096, (LPDWORD)4096, NULL);
+#endif
                     block_count-=1;
                 }
             }
@@ -131,7 +156,11 @@ void sdat2img(const char * TRANSFER_LIST_FILE, const char * NEW_DATA_FILE, char 
 
     }
     printf("Done! Output image: %s\n" ,OUTPUT_IMAGE_FILE);
+#ifndef __WIN32
     fclose(output_img);
+#else
+    CloseHandle(output_img);
+#endif
     fclose(new_data_file);
 }
 int main(const int argc, char *argv[]) {
