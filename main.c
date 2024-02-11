@@ -41,7 +41,7 @@ void rangeset(char * src, int *len, num_set_tuple *data) {
         times++;
         src_set_tmp = strtok(NULL, ",");
     }
-    off_t num_set_len = times;
+    const off_t num_set_len = times;
     for (int times2 = 0;times2 < times; times2++) {
         num_set[times2] = atoi(src_set[times2]);
     }
