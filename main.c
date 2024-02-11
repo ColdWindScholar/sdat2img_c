@@ -34,7 +34,7 @@ void rangeset(char * src, int *len, num_set_tuple *data) {
     off_t num_set[400];
     char src_copied[_MAX_PATH];
     strcpy(src_copied, src);
-    char *src_set_tmp = strtok(src_copied, ",");
+    const char *src_set_tmp = strtok(src_copied, ",");
     while (src_set_tmp != NULL) {
         src_set[times] = malloc(strlen(src_set_tmp) + 1); // 分配足够的内存空间
         strcpy(src_set[times], src_set_tmp); // 复制子字符串到新分配的内存中
