@@ -46,7 +46,7 @@ void rangeset(char * src, int *len, num_set_tuple *data) {
     }
     * len = num_set_len/2;
     if (num_set_len != num_set[0]+1) {
-        fprintf(stderr, "Error on parsing following data to rangeset(%lld:%lld):\n%s\n", num_set_len, num_set[0]+1, src);
+        fprintf(stderr, "Error on parsing following data to rangeset(%lld:%lld):\n%s\n", (long long int)num_set_len, (long long int)num_set[0]+1, src);
         exit(1);
     }
     times = 0;
@@ -126,7 +126,7 @@ void sdat2img(const char * TRANSFER_LIST_FILE, const char * NEW_DATA_FILE, char 
                 {
                     max_file_size = data[i_].end * BLOCK_SIZE;
                 }
-                printf("Copying %lld blocks into position %lld...\n", block_count, data[i_].begin);
+                printf("Copying %lld blocks into position %lld...\n", (long long int)block_count, (long long int)data[i_].begin);
                 _fseeki64(output_img, data[i_].begin * BLOCK_SIZE, SEEK_SET);
                 while(block_count > 0) {
                     char* file_data[4096];
