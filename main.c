@@ -16,8 +16,10 @@
 #ifndef fopen64
 #define fopen64 fopen
 #endif
+#if !__WIN32__
 #ifndef _fseeki64
 #define _fseeki64 fseek
+#endif
 #endif
 typedef struct  {
     off_t begin;
