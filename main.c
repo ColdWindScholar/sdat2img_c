@@ -20,6 +20,9 @@
 #ifdef off64_t
 #define off_t off64_t
 #endif
+#ifndef truncate64
+#define truncate64 truncate
+#endif
 typedef struct  {
     off_t begin;
     off_t end;
@@ -101,6 +104,7 @@ void parse_transfer_list_file(const char *TRANSFER_LIST_FILE, list_data * parse_
 void sdat2img(const char * TRANSFER_LIST_FILE, const char * NEW_DATA_FILE, char * OUTPUT_IMAGE_FILE) {
     printf("sdat2img binary - version: 1.3\n");
     list_data parse_data[8196];
+    off_t max_file_size = 0;
     int new_blocks;
     parse_transfer_list_file(TRANSFER_LIST_FILE, (list_data *)&parse_data, &new_blocks);
 
@@ -118,6 +122,14 @@ void sdat2img(const char * TRANSFER_LIST_FILE, const char * NEW_DATA_FILE, char 
             rangeset(parse_data[i].src, &len, (num_set_tuple *)&data);
             for (int i_ =0; i_ < len; i_++) {
                 off_t block_count = data[i_].end - data[i_].begin;
+                if ((data[i_].begin * BLOCK_SIZE) > max_file_size)
+                {
+                    max_file_size = data[i_].begin * BLOCK_SIZE;
+                }
+                if ((data[i_].end * BLOCK_SIZE) > max_file_size)
+                {
+                    max_file_size = data[i_].end * BLOCK_SIZE;
+                }
                 printf("Copying %lld blocks into position %lld...\n", block_count, data[i_].begin);
                 _fseeki64(output_img, data[i_].begin * BLOCK_SIZE, SEEK_SET);
                 while(block_count > 0) {
@@ -132,9 +144,13 @@ void sdat2img(const char * TRANSFER_LIST_FILE, const char * NEW_DATA_FILE, char 
         }
 
     }
-    printf("Done! Output image: %s\n" ,OUTPUT_IMAGE_FILE);
     fclose(output_img);
     fclose(new_data_file);
+    if (ftello64(output_img) < max_file_size){
+        truncate64(OUTPUT_IMAGE_FILE, max_file_size);
+        printf("%lld", max_file_size);
+    }
+    printf("Done! Output image: %s\n" ,OUTPUT_IMAGE_FILE);
 }
 int main(const int argc, char *argv[]) {
     if (argc == 4) {
