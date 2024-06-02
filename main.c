@@ -45,6 +45,7 @@ void rangeset(char * src, int *len, num_set_tuple *data) {
     const off_t num_set_len = times;
     for (int times2 = 0;times2 < times; times2++) {
         num_set[times2] = atoi(src_set[times2]);
+        free(src_set[times2]);
     }
     * len = num_set_len/2;
     if (num_set_len != num_set[0]+1) {
@@ -152,7 +153,6 @@ void sdat2img(const char * TRANSFER_LIST_FILE, const char * NEW_DATA_FILE, char 
                 }}
             printf("Skipping command |%s|...\n", parse_data[i].cmd);
         }
-
     }
     off_t f_tell = ftello64(output_img);
     fclose(output_img);
