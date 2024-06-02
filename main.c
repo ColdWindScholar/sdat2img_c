@@ -17,12 +17,6 @@
 #define fopen64 fopen
 #define _fseeki64 fseek
 #endif
-#ifdef off64_t
-#define off_t off64_t
-#endif
-#ifndef truncate64
-// #define truncate64 truncate
-#endif
 typedef struct  {
     off_t begin;
     off_t end;
