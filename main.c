@@ -2,7 +2,6 @@
 #define _LARGEFILE64_SOURCE
 #define _FILE_OFFSET_BITS 64
 #define LARGEFILES
-#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -48,7 +47,7 @@ void rangeset(char * src, int *len, num_set_tuple *data) {
     }
     * len = num_set_len/2;
     if (num_set_len != num_set[0]+1) {
-        fprintf(stderr, "Error on parsing following data to rangeset(%ld:%ld):\n%s\n", num_set_len, num_set[0]+1, src);
+        fprintf(stderr, "Error on parsing following data to rangeset(%lld:%lld):\n%s\n", num_set_len, num_set[0]+1, src);
         exit(1);
     }
     times = 0;
@@ -112,14 +111,14 @@ void sdat2img(const char * TRANSFER_LIST_FILE, const char * NEW_DATA_FILE, char 
         printf("Error: Cannot Creat NEW_DATA Images\n");
         exit(1);
     }
-    for (int i=0; parse_data[i].cmd != '\0';i++) {
+    for (int i=0; parse_data[i].cmd != (void *)0;i++) {
         if (strcmp(parse_data[i].cmd, "new") == 0) {
             int len = 0;
             num_set_tuple data[_MAX_PATH];
             rangeset(parse_data[i].src, &len, (num_set_tuple *)&data);
             for (int i_ =0; i_ < len; i_++) {
                 off_t block_count = data[i_].end - data[i_].begin;
-                printf("Copying %ld blocks into position %ld...\n", block_count, data[i_].begin);
+                printf("Copying %lld blocks into position %lld...\n", block_count, data[i_].begin);
                 _fseeki64(output_img, data[i_].begin * BLOCK_SIZE, SEEK_SET);
                 while(block_count > 0) {
                     char* file_data[4096];
