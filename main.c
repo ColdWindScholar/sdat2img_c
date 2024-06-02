@@ -136,6 +136,18 @@ void sdat2img(const char * TRANSFER_LIST_FILE, const char * NEW_DATA_FILE, char 
                 }
             }
         } else {
+            int len = 0;
+            num_set_tuple data[_MAX_PATH];
+            rangeset(parse_data[i].src, &len, (num_set_tuple *)&data);
+            for (int i_ =0; i_ < len; i_++) {
+                if ((data[i_].begin * BLOCK_SIZE) > max_file_size)
+                {
+                    max_file_size = data[i_].begin * BLOCK_SIZE;
+                }
+                if ((data[i_].end * BLOCK_SIZE) > max_file_size)
+                {
+                    max_file_size = data[i_].end * BLOCK_SIZE;
+                }}
             printf("Skipping command |%s|...\n", parse_data[i].cmd);
         }
 
