@@ -21,7 +21,7 @@
 #define off_t off64_t
 #endif
 #ifndef truncate64
-#define truncate64 truncate
+// #define truncate64 truncate
 #endif
 typedef struct  {
     off_t begin;
@@ -144,11 +144,12 @@ void sdat2img(const char * TRANSFER_LIST_FILE, const char * NEW_DATA_FILE, char 
         }
 
     }
+    off_t f_tell = ftello64(output_img);
     fclose(output_img);
     fclose(new_data_file);
-    if (ftello64(output_img) < max_file_size){
+    if (f_tell < max_file_size){
         truncate64(OUTPUT_IMAGE_FILE, max_file_size);
-        printf("%lld", max_file_size);
+        printf("%lld\n", max_file_size);
     }
     printf("Done! Output image: %s\n" ,OUTPUT_IMAGE_FILE);
 }
