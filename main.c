@@ -115,6 +115,9 @@ void sdat2img(const char * TRANSFER_LIST_FILE, const char * NEW_DATA_FILE, char 
         exit(1);
     }
     for (int i=0; parse_data[i].cmd != (void *)0;i++) {
+        if (i > 0){
+            free(parse_data[i-1].cmd);
+        }
         if (strcmp(parse_data[i].cmd, "new") == 0) {
             int len = 0;
             num_set_tuple data[_MAX_PATH];
