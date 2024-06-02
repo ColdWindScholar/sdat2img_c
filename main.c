@@ -145,7 +145,6 @@ void sdat2img(const char * TRANSFER_LIST_FILE, const char * NEW_DATA_FILE, char 
     fclose(new_data_file);
     if (f_tell < max_file_size){
         truncate64(OUTPUT_IMAGE_FILE, max_file_size);
-        printf("%lld\n", max_file_size);
     }
     printf("Done! Output image: %s\n" ,OUTPUT_IMAGE_FILE);
 }
