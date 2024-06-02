@@ -16,6 +16,9 @@
 #ifndef fopen64
 #define fopen64 fopen
 #endif
+#ifndef _fseeki64
+#define _fseeki64 fseek
+#endif
 typedef struct  {
     off_t begin;
     off_t end;
