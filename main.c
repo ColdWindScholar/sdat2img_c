@@ -69,7 +69,7 @@ void parse_transfer_list_file(const char *TRANSFER_LIST_FILE, list_data * parse_
     int offset=2;
     int l =0;
 
-    lines[0] = malloc(2048);
+    lines[0] = malloc(sizeof (char *)* 10);
     for(;fgets(lines[l], 2048, trans_list)!=NULL ;l++) {
         lines[l+1] = malloc(2048);
     }
